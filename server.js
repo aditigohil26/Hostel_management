@@ -1,6 +1,9 @@
-if (process.env.NODE_ENV !== 'production'){
-    require('dotenv').config()
-}
+// if (process.env.NODE_ENV !== 'production'){
+//     require('dotenv').config()
+// }
+
+const dotenv = require('dotenv');
+dotenv.config();
 
 const express = require('express')
 const app = express()
@@ -12,27 +15,22 @@ const passport = require('passport'),
 const router = express.Router()
 
 // User Route (Login)
-const User = require("./models/users")
-
 
 // Rooms Route
 const Rooms = require("./models/rooms")
 
 
-// Reservation Route
-const Reservation = require("./models/reservation")
+const mongoose = require('mongoose');
 
-
-const mongoose = require('mongoose')
-const { appendFile } = require('fs')
-mongoose.connect(process.env.DATABASE_URL,{
+const { appendFile } = require('fs');
+const { env } = require('process');
+mongoose
+    .connect(process.env.DATABASE_URL,{
     useNewUrlParser: true, useUnifiedTopology: true
 })
-const database = mongoose.connection
-database.on('error',error=>console.error(error))
-database.once('open',()=>console.log('Connected to Mongoose'))
-
-// Listening
+ .then(()=>{
+     console.log("mongo connected!");
+ })
 
 app.listen(process.env.PORT || 8000, function(err){
     if(err){
@@ -40,5 +38,4 @@ app.listen(process.env.PORT || 8000, function(err){
     }else{
         console.log("Server Running at port 8000")
     }
-})
-
+});

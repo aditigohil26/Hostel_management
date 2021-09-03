@@ -1,7 +1,3 @@
-// if (process.env.NODE_ENV !== 'production'){
-//     require('dotenv').config()
-// }
-
 const dotenv = require('dotenv');
 dotenv.config();
 
@@ -14,9 +10,6 @@ const passport = require('passport'),
       User = require('./models/users')
 const router = express.Router()
 
-// User Route (Login)
-
-// Rooms Route
 const Rooms = require("./models/rooms")
 
 

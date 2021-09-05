@@ -3,7 +3,7 @@ const router = express.Router();
 var path = require('path');
 
 router.get('/', async(req, res) => {
-    res.sendFile(path.join(__dirname, '../views','auth.html'));
+    res.sendFile(path.join(__dirname, '../views','index.html'));
 })
 
 // function isLoggedIn(req,res,next) {

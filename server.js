@@ -1,29 +1,48 @@
-const dotenv = require('dotenv');
-dotenv.config();
+// IMPORTS
+const   express = require('express'),
+        app = express(),
+        expressLayouts = require('express-ejs-layouts'),
+        passport = require('passport'),
+        LocalStrategy = require('passport-local'),
+        passportLocalMongoose = require('passport-local-mongoose'),
+        bodyParser = require('body-parser');
 
-const express = require('express')
-const app = express()
-const expressLayouts = require('express-ejs-layouts')
-const passport = require('passport'),
-      LocalStrategy = require('passport-local'),
-      passportLocalMongoose = require('passport-local-mongoose'),
-      User = require('./models/users')
-const router = express.Router()
+var path = require('path');
 
-const Rooms = require("./models/rooms")
+// MODELS
+const Users = require('./models/users');
+const Rooms = require("./models/rooms");
+const Reservations = require("./models/reservations");
 
+// ROUTES
+const userRouter = require('./routes/user');
+const indexRouter = require('./routes/index');
+const roomRouter = require('./routes/room');
+const resRouter = require('./routes/reservation');
 
+app.use(express.static(path.join(__dirname, '/public')));
+app.use(bodyParser.urlencoded({limit: '10mb',extended: false}))
+
+// DATABASE CONNECTION
 const mongoose = require('mongoose');
-
 const { appendFile } = require('fs');
 const { env } = require('process');
-mongoose
-    .connect(process.env.DATABASE_URL,{
-    useNewUrlParser: true, useUnifiedTopology: true
-})
- .then(()=>{
-     console.log("mongo connected!");
- })
+
+const dotenv = require('dotenv');
+dotenv.config();
+mongoose.connect(process.env.DATABASE_URL,{
+    useNewUrlParser: true, 
+    useUnifiedTopology: true
+}).then(()=>{
+        console.log("Database connected!");
+    })
+
+// USING ROUTERS
+
+app.use('/', userRouter)
+app.use('/index', indexRouter)
+app.use('/rooms', roomRouter)
+app.use('/reservations', resRouter)
 
 app.listen(process.env.PORT || 8000, function(err){
     if(err){

@@ -16,15 +16,12 @@ const user_schema = new mongoose.Schema({
 
     password:{
         type: String,
-        require: true,
-        min: 8, 
+        require: true
     },
 
     phone:{
         type: Number,
-        require: true,
-        min:10,
-        max:10,
+        require: true
     },
 
     guest_type:{

@@ -37,8 +37,21 @@ mongoose.connect(process.env.DATABASE_URL,{
         console.log("Database connected!");
     })
 
-// USING ROUTERS
 
+//PASSPORT SETUP
+app.use(require("express-session")({
+    secret:"secretword",       //decode or encode session
+    resave: false,          
+    saveUninitialized:false    
+}));
+passport.serializeUser(Users.serializeUser());       //session encoding
+passport.deserializeUser(Users.deserializeUser());   //session decoding
+passport.use(new LocalStrategy(Users.authenticate()));
+app.use(passport.initialize());
+app.use(passport.session());
+
+
+// USING ROUTERS
 app.use('/', userRouter)
 app.use('/index', indexRouter)
 app.use('/rooms', roomRouter)

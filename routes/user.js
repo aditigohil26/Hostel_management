@@ -7,15 +7,10 @@ const User = require('../models/users');
 
 
 router.get('/', async(req, res) => {
-    res.sendFile(path.join(__dirname, '../views','auth.html'));
+    // res.sendFile(path.join(__dirname, '../views','auth.html'));
+    res.render('auth')
 })
 
-// router.get('/login', async(req, res) => {
-//     res.redirect('/');
-// })
-// router.get('/register', async(req, res) => {
-//     res.redirect('/');
-// })
 router.get("/logout",(req,res)=>{
     req.logout();
     res.redirect("/");
@@ -39,11 +34,5 @@ router.post("/register",(req,res)=>{
     })
 })
 
-// function isLoggedIn(req,res,next) {
-//     if(req.isAuthenticated()){
-//         return next();
-//     }
-//     res.redirect("/");
-// }
 
 module.exports = router

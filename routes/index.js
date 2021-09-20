@@ -11,7 +11,7 @@ function isLoggedIn(req,res,next) {
 }
 
 router.get('/', isLoggedIn,async(req, res) => {
-    res.sendFile(path.join(__dirname, '../views','index.html'));
+    res.render('index', {username: req.user.username})
 })
 
 module.exports = router

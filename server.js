@@ -11,15 +11,17 @@ var path = require('path');
 
 // MODELS
 const Users = require('./models/users');
-const Rooms = require("./models/rooms");
 const Reservations = require("./models/reservations");
 
 // ROUTES
 const userRouter = require('./routes/user');
 const indexRouter = require('./routes/index');
-const roomRouter = require('./routes/room');
 const resRouter = require('./routes/reservation');
 
+app.set('view engine', 'ejs')
+app.set('views', __dirname + '/views')
+app.set('layout', 'layouts/layout')
+app.use(expressLayouts)
 app.use(express.static(path.join(__dirname, '/public')));
 app.use(bodyParser.urlencoded({limit: '10mb',extended: false}))
 
@@ -54,7 +56,6 @@ app.use(passport.session());
 // USING ROUTERS
 app.use('/', userRouter)
 app.use('/index', indexRouter)
-app.use('/rooms', roomRouter)
 app.use('/reservations', resRouter)
 
 app.listen(process.env.PORT || 8000, function(err){

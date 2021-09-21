@@ -4,7 +4,7 @@ const express = require('express'),
 const router = express.Router();
 var path = require('path');
 const User = require('../models/users');
-
+const Reservation = require('../models/reservations');
 
 router.get('/', async(req, res) => {
     // res.sendFile(path.join(__dirname, '../views','auth.html'));
@@ -17,9 +17,13 @@ router.get("/logout",(req,res)=>{
 });
 
 router.post("/login",passport.authenticate("local",{
-    successRedirect:"/index",
     failureRedirect:"/"
-}),function (req, res){
+}), (req, res)=>{
+    if(req.user.guest_type=="admin"){
+        res.redirect('/adminindex')
+    }else{
+        res.redirect('/index')
+    }
 });
 
 router.post("/register",(req,res)=>{
@@ -32,6 +36,40 @@ router.post("/register",(req,res)=>{
         res.redirect("/");
     })    
     })
+})
+
+// ADMIN ROUTES
+
+function adminLogin(req,res,next) {
+    if(req.isAuthenticated()){
+        if(req.user.guest_type=="admin"){
+            return next();
+        }
+    }
+    res.redirect('/')
+}
+
+router.get('/adminindex', adminLogin, async(req, res) => {
+    try{
+        const reserves = await Reservation.find()
+        res.render('admin/index',{
+            reserves: reserves
+        })
+    }catch{
+        res.redirect('/')
+    }
+    // res.render('ad/min/index')
+})
+
+router.get('/users', adminLogin, async(req, res) => {
+    try{
+        const users = await User.find()
+        res.render('admin/users',{
+            users: users
+        })
+    }catch{
+        res.redirect('/')
+    }
 })
 
 

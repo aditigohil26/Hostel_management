@@ -9,10 +9,22 @@
 </head>
 
 <body>
-    <div>
-        <%- include('../partials/header.ejs') %>
+    <div class="mainhead">
+            <nav class="header-nav" id="userheader">
+                <a href="/index">Index</a>
+                <a href="/reservations">Reserve</a>
+                <a href="/reservations/bookings">Bookings</a>
+                <a href="/admin" onclick="click()">Admin</a>
+                <a href="/logout">Logout</a>
+            </nav>
+            
+        <nav class="header-nav" id="adminheader">
+            <a href="/adminindex">Admin index</a>
+            <a href="/users">User</a>
+        </nav>
     </div>
     <%- body %>
+
 </body>
 
 </html>
